@@ -10,12 +10,6 @@
  * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
  */
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import com.swirlds.platform.Browser;
@@ -24,13 +18,12 @@ import com.swirlds.platform.SwirldMain;
 import com.swirlds.platform.SwirldState;
 
 
-public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
+public class MyFirstDappMain implements SwirldMain, Server.ServerContract{
     private static final int PORT = 2027;
     private Platform platform;
     private int selfId;
     private final int sleepPeriod = 100;
 
-    private String name;
     private Server server;
 
     public MyFirstDappMain() {
@@ -40,7 +33,7 @@ public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
             System.out.println("server == null");
             this.server = new Server(PORT, this);
             this.server.start();
-            // this.server.write();
+            // this.server.sendMessage();
         }
     }
 
@@ -69,10 +62,6 @@ public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
     @Override
     public void run() {
         System.out.println("run()");
-
-        this.name = platform.getState().getAddressBookCopy()
-                .getAddress(selfId).getSelfName();
-
         String lastReceived = "";
 
         while (true) {
@@ -81,7 +70,7 @@ public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
             String received = state.getReceived();
             if (!lastReceived.equals(received)) {
                 lastReceived = received;
-                server.write(lastReceived);
+                server.sendMessage(lastReceived);
             }
             try {
                 Thread.sleep(sleepPeriod);
@@ -97,14 +86,8 @@ public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
     }
 
     @Override
-    public void addMessage(String json) {
-        byte[] transaction = json.getBytes(StandardCharsets.UTF_8);
+    public void onMessageReceived(String message) {
+        byte[] transaction = message.getBytes(StandardCharsets.UTF_8);
         platform.createTransaction(transaction, null);
-    }
-
-    @Override
-    public String getMessages(int index) {
-        MyFirstDappState state = ((MyFirstDappState) platform.getState());
-        return state.getReceived();
     }
 }

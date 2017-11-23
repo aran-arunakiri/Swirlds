@@ -11,19 +11,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
+    interface ServerContract {
+        void onMessageReceived(String message);
+    }
+
     private final int port;
     private boolean running;
     private final ExecutorService threadPool;
     private Thread serverThread;
     private Socket client;
-    private JsonHashGraphNode node;
+    private ServerContract contract;
 
-    private static final String ACTION_ADD_MESSAGE = "add";
-    private static final String ACTION_GET_MESSAGE = "get";
-    
-    public Server(int port, JsonHashGraphNode node) {
+    public Server(int port, ServerContract serverContract) {
         this.port = port;
-        this.node = node;
+        this.contract = serverContract;
         threadPool = Executors.newFixedThreadPool(10, new ThreadFactory() {
             private final AtomicInteger instanceCount = new AtomicInteger();
 
@@ -53,16 +54,7 @@ public class Server {
                             try (BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()))) {
                                 String line;
                                 while ((line = in.readLine()) != null) {
-                                    String command[] = line.split(" ");
-                                    switch (command[0]) {
-                                        case ACTION_ADD_MESSAGE:
-                                            node.addMessage(command[1]);
-                                            break;
-                                        case ACTION_GET_MESSAGE:
-                                            write(node.getMessages(Integer.parseInt(command[1])));
-                                            break;
-                                    }
-
+                                    contract.onMessageReceived(line);
                                 }
                             }
                             client.close();
@@ -79,10 +71,10 @@ public class Server {
         serverThread.start();
     }
 
-    public void write(String s) {
+    public void sendMessage(String message) {
         if (this.client != null) {
             try {
-                this.client.getOutputStream().write(s.getBytes());
+                this.client.getOutputStream().write(message.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
