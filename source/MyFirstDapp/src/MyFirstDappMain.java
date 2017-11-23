@@ -18,13 +18,13 @@ import com.swirlds.platform.SwirldMain;
 import com.swirlds.platform.SwirldState;
 
 
-public class MyFirstDappMain implements SwirldMain, Server.ServerContract{
+public class MyFirstDappMain implements SwirldMain, Server.ServerContract {
     private static final int PORT = 2027;
     private Platform platform;
     private int selfId;
     private final int sleepPeriod = 100;
 
-    private Server server;
+    private static Server server;
 
     public MyFirstDappMain() {
         System.out.println("MyFirstDappMain()");
@@ -41,8 +41,6 @@ public class MyFirstDappMain implements SwirldMain, Server.ServerContract{
         Browser.main(null);
         System.out.println("main");
     }
-
-    // ///////////////////////////////////////////////////////////////////
 
     @Override
     public void preEvent() {
