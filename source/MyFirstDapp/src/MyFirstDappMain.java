@@ -23,33 +23,13 @@ import com.swirlds.platform.Platform;
 import com.swirlds.platform.SwirldMain;
 import com.swirlds.platform.SwirldState;
 
-/**
- * This HelloSwirld creates a single transaction, consisting of the string "Hello Swirld", and then goes
- * into a busy loop (checking once a second) to see when the state gets the transaction. When it does, it
- * prints it, too.
- */
-public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
-    public static final int PORT = 2027;
-    /**
-     * the platform running this app
-     */
-    public Platform platform;
-    /**
-     * ID number for this member
-     */
-    public int selfId;
-    /**
-     * sleep this many milliseconds after each sync
-     */
-    public final int sleepPeriod = 100;
 
-    /**
-     * This is just for debugging: it allows the app to run in Eclipse. If the config.txt exists and lists a
-     * particular SwirldMain class as the one to run, then it can run in Eclipse (with the green triangle
-     * icon).
-     *
-     * @param args these are not used
-     */
+public class MyFirstDappMain implements SwirldMain, JsonHashGraphNode {
+    private static final int PORT = 2027;
+    private Platform platform;
+    private int selfId;
+    private final int sleepPeriod = 100;
+
     private String name;
     private Server server;
 

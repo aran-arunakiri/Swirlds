@@ -18,10 +18,9 @@ public class Server {
     private Socket client;
     private JsonHashGraphNode node;
 
-    public static final String ACTION_ADD_MESSAGE = "add";
-    public static final String ACTION_GET_MESSAGE = "get";
-
-
+    private static final String ACTION_ADD_MESSAGE = "add";
+    private static final String ACTION_GET_MESSAGE = "get";
+    
     public Server(int port, JsonHashGraphNode node) {
         this.port = port;
         this.node = node;
@@ -40,7 +39,6 @@ public class Server {
 
     public void start() {
         running = true;
-        System.out.println("------------- Starting Server Up -------------");
         System.out.println("port = " + port);
         serverThread = new Thread(() ->
         {
@@ -61,7 +59,7 @@ public class Server {
                                             node.addMessage(command[1]);
                                             break;
                                         case ACTION_GET_MESSAGE:
-                                            write(node.getMessage(Integer.parseInt(command[1])));
+                                            write(node.getMessages(Integer.parseInt(command[1])));
                                             break;
                                     }
 
