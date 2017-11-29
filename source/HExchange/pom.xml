@@ -11,13 +11,13 @@
         <app.repo>${project.baseUri}../../data/repos/app/</app.repo>
         <platform.repo>${project.baseUri}../../data/repos/platform/</platform.repo>
         <sdk.dir>${project.basedir}/../..</sdk.dir>
-        <app.name>MyFirstDapp</app.name>
+        <app.name>HExchange</app.name>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>MyFirstDapp</groupId>
+    <groupId>HExchange</groupId>
     <!-- Eclipse can't handle a variable ref here -->
-    <artifactId>MyFirstDapp</artifactId>
+    <artifactId>HExchange</artifactId>
 
 
     <dependencies>

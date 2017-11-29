@@ -11,13 +11,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>CryptocurrencyDemo</module>
-    <module>GameDemo</module>
-    <module>HashgraphDemo</module>
-    <module>HelloSwirldDemo</module>
     <module>MyFirstDapp</module>
-    <module>StatsDemo</module>
-    <module>FilesystemDemo</module>
+    <module>HExchange</module>
   </modules>
 
 </project>
